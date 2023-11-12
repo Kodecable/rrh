@@ -6,10 +6,10 @@ RRH_USR_BIN="."
 RRH_VAR="$HOME/.cache/rrh-test"
 
 if [ ! "$#" -eq 0 ]; then
-	echo "Usage: rrh-mark-update"
+    echo "Usage: rrh-mark-update"
         echo "Mark once update. May require root."
-	echo "RRH $RRH_VERSION"
-	exit 8
+    echo "RRH $RRH_VERSION"
+    exit 8
 fi
 
 if [ "$(id -un)" != "root" ]; then
@@ -23,7 +23,7 @@ fi
 
 echo "$(date -u +'%s')" >"$RRH_VAR/last_time"
 if [ ! $? -eq 0 ]; then
-	echo "write last update time failed!" >&2
-	exit 7
+    echo "write last update time failed!" >&2
+    exit 7
 fi
 exit 0

@@ -16,11 +16,11 @@ help() {
     echo "If it is more than 'OUTDATE_TIME' since the last update,"
     echo "exit with 0, otherwise exit with non-0."
     echo "RRH $RRH_VERSION"
-	exit 8
+    exit 8
 }
 
 if [ "$#" -gt 1 ]; then
-	help
+    help
 fi
 
 if [ -f /etc/rrh/outdate_time ]; then
@@ -31,9 +31,9 @@ fi
 
 if [ ! $# -eq 0 ]; then 
     if [ "$1" == "-h" ] || [ "$1" == "--help" ] ||
-		[ "$1" == "-v" ] || [ "$1" == "--version" ]; then
-		help
-	else
+        [ "$1" == "-v" ] || [ "$1" == "--version" ]; then
+        help
+    else
         OUTDATE_TIME="$1"
     fi
 fi

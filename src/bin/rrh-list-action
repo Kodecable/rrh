@@ -7,15 +7,15 @@ RRH_USR_BIN="."
 RRH_VAR="$HOME/.cache/rrh-test"
 
 if [ ! "$#" -eq 0 ]; then
-	echo "Usage: rrh-list-action"
-	echo "List actions."
-	echo "RRH $RRH_VERSION"
-	exit 8
+    echo "Usage: rrh-list-action"
+    echo "List actions."
+    echo "RRH $RRH_VERSION"
+    exit 8
 fi
 
 if [ ! -f "$RRH_VAR/last" ]; then
-	echo " - empty - "
-	exit 0
+    echo " - empty - "
+    exit 0
 fi
 
 echo "Last update time: $($RRH_USR_BIN/rrh-last-time -h) ago"
@@ -24,6 +24,6 @@ echo "Last update id:   $(cat $RRH_VAR/last)"
 echo "Action ID      Exit Code"
 ls -1 "$RRH_VAR/action" |
 while IFS= read -r line; do
-	echo "$line $(cat $RRH_VAR/action/$line/exit_code)"
+    echo "$line $(cat $RRH_VAR/action/$line/exit_code)"
 done
 

@@ -6,25 +6,25 @@ RRH_USR_BIN="."
 RRH_VAR="$HOME/.cache/rrh-test"
 
 if [ $# -gt 1 ]; then
-	echo "Usage: rrh-cat-output [ACTION_ID]"
-	echo "Print the output of action."
-	echo "RRH $RRH_VERSION"
-	exit 8
+    echo "Usage: rrh-cat-output [ACTION_ID]"
+    echo "Print the output of action."
+    echo "RRH $RRH_VERSION"
+    exit 8
 fi
 
 if [ $# -eq 0 ]; then
-	ACTION_ID="$(cat $RRH_VAR/last)"
-	if [ ! $? -eq 0 ]; then
-		echo "read last action id failed!"
-		exit 9
-	fi
+    ACTION_ID="$(cat $RRH_VAR/last)"
+    if [ ! $? -eq 0 ]; then
+        echo "read last action id failed!"
+        exit 9
+    fi
 else
-	ACTION_ID="$1"
+    ACTION_ID="$1"
 fi
 
 if [ ! -d "$RRH_VAR/action/$ACTION_ID" ]; then
-	echo "action(id $ACTION_ID) not exists!"
-	exit 10
+    echo "action(id $ACTION_ID) not exists!"
+    exit 10
 fi
 
 cat "$RRH_VAR/action/$ACTION_ID/cmd_output"
