@@ -59,7 +59,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 if command -v "unbuffer" >/dev/null 2>&1; then
-    "$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" unbuffer /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
+    "$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" unbuffer "-p" /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
     UPDATE_EXIT_CODE=$?
 else
     "$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
