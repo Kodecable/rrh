@@ -17,7 +17,7 @@ If you are using bash, add the following command to your `.bashrc`:
 rrh-echo-reminder
 ```
 
-Now, when you log in and the system is outdated, you will receive a reminder:
+Now, when you log in and the system is outdated, you will receive a reminder: `This system has not been updated for a long time`
 
 ### Execute Custom Script When the System is Outdated
 

@@ -60,7 +60,7 @@ View the output of your last update command:
 $ rrh-view-output
 ```
 
-Add the following command to your `.bashrc` for timely update reminders:
+(If you are using bash) Add the following command to your `.bashrc` for timely update reminders:
 
 ```bash
 rrh-echo-reminder
