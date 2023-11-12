@@ -58,9 +58,19 @@ if [ ! $? -eq 0 ]; then
 	exit 4
 fi
 
-"$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
-UPDATE_EXIT_CODE=$?
+if command -v "unbuffer" >/dev/null 2>&1; then
+	"$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" unbuffer /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
+	UPDATE_EXIT_CODE=$?
+else
+	"$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
+	UPDATE_EXIT_CODE=$?
+fi
 echo "$UPDATE_EXIT_CODE" >"$EXIT_CODE_FILE"
+
+if [ -t 0 ]; then
+	IFS=';' read -sdR -p $'\E[6n' ROW COL # Get cursor position
+	[ $COL -ne 1 ] && echo '' # Add newline if cursor is not at 1st column
+fi
 
 # write update time even if update fail
 echo "$(date -u +'%s')" >"$RRH_VAR/last_time"
