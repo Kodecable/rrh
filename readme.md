@@ -15,6 +15,7 @@ Rolling Release Helper
 1. Download Arch package in [latest release](https://github.com/Kodecable/rrh/releases/latest).
 2. Install package by  `pacman -U FILE`.
 3. (If you are using AUR Helper) Config your username in `/etc/rrh/user`.
+4. (Optional, Highly recommended) Install `less` and `expect` for better output.
 
 ### Other
 
