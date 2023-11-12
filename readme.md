@@ -38,7 +38,7 @@ pacman -Syu # Replace with your update command
 
 Ensure that this file has execute permissions.
 
-For more advanced configuration, please refer to [doc/configuration](https://github.com/Kodecable/rrh/doc/configuration.md).
+For more advanced configuration, please refer to [doc/configuration](https://github.com/Kodecable/rrh/blob/main/doc/configuration.md).
 
 ## Usage
 
@@ -66,7 +66,7 @@ Add the following command to your `.bashrc` for timely update reminders:
 rrh-echo-reminder
 ```
 
-For more advanced usage, please refer to [doc/usage](https://github.com/Kodecable/rrh/doc/usage.md).
+For more advanced usage, please refer to [doc/usage](https://github.com/Kodecable/rrh/blob/main/doc/usage.md).
 
 ## License
 

@@ -88,7 +88,7 @@ Usage: rrh-doas USER COMMAND...
 RRH unified interface for user switching.
 ```
 
-see [doc/configuration#Doas](https://github.com/Kodecable/rrh/doc/configuration.md#Doas).
+see [doc/configuration#Doas](https://github.com/Kodecable/rrh/blob/main/doc/configuration.md#Doas).
 
 ### rrh-echo-reminder
 
