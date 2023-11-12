@@ -1,0 +1,6 @@
+[Unit]
+Description="RRH daily outdate check"
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rrh-auto-check

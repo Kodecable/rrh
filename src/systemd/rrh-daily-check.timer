@@ -1,0 +1,10 @@
+[Unit]
+Description="RRH daily outdate check"
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+AccuracySec=1h
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=multi-user.target

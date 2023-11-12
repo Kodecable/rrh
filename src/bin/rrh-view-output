@@ -1,0 +1,20 @@
+#!/bin/sh
+set -o nounset
+set -o pipefail
+RRH_VERSION="source"
+RRH_USR_BIN="."
+RRH_VAR="$HOME/.cache/rrh-test"
+
+if [ $# -gt 1 ]; then
+	echo "Usage: rrh-view-output [ACTION_ID]"
+	echo "View the output of action."
+	echo "RRH $RRH_VERSION"
+	exit 8
+fi
+
+if command -v "less" >/dev/null 2>&1; then
+	"$RRH_USR_BIN/rrh-cat-output" "$@" | less -
+else
+	"$RRH_USR_BIN/rrh-cat-output" "$@" | more
+fi
+exit $?

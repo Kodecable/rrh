@@ -1,0 +1,47 @@
+#!/bin/bash
+set -o nounset
+set -o pipefail
+RRH_VERSION="source"
+RRH_USR_BIN="."
+RRH_VAR="$HOME/.cache/rrh-test"
+
+OUTDATE_TIME=""
+REMIND_TEXT="This system has not been updated for a long time"
+
+help() {
+    echo "Usage: rrh-echo-reminder [-t OUTDATE_TIME] [-s REMIND_TEXT]"
+    echo "Print REMIND_TEXT when system outdated."
+    echo ""
+    echo "  OUTDATE_TIME    see 'rrh-is-outdated --help'"
+    echo "  REMIND_TEXT     text (default '$REMIND_TEXT')"
+    echo ""
+    echo "RRH $RRH_VERSION"
+    exit 8
+}
+
+while getopts 't:s:h' OPT; do
+    case $OPT in
+        t) OUTDATE_TIME="$OPTARG";;
+        s) REMIND_TEXT="$OPTARG";;
+        h) help;;
+        ?) help;;
+    esac
+done
+shift $(($OPTIND - 1))
+if [ ! $# -eq 0 ]; then
+    help
+fi
+
+if [ ! -z "$OUTDATE_TIME" ]; then
+    "$RRH_USR_BIN/rrh-is-outdated" "$OUTDATE_TIME"
+    RESULT=$?
+else
+    "$RRH_USR_BIN/rrh-is-outdated"
+    RESULT=$?
+fi
+
+if [ $RESULT -eq 0 ]; then
+    echo "$REMIND_TEXT"
+fi
+
+exit 0

@@ -1,0 +1,76 @@
+#!/bin/bash
+set -o errexit
+set -o nounset
+set -o pipefail
+shopt -s nocasematch
+RRH_VERSION="source"
+RRH_USR_BIN="."
+RRH_VAR="$HOME/.cache/rrh-test"
+
+Help() {
+    echo "Usage: rrh-output-digest [OPTION]... [FILE]"
+    echo "Analyze command output and generate digest."
+    echo ""
+    echo "  -c WHEN     use color (default 'auto')"
+    echo "              WHEN is 'always', 'never', or 'auto'"
+    echo "  -n NUM      print NUM lines of output context (default 1)"
+    echo "  -h          print this message and exit"
+    echo ""
+    echo "With no FILE or FILE is '-', read standard input."
+    echo "RRH $RRH_VERSION"
+    exit 8
+}
+
+PrintAndHelp() {
+    echo "$1"
+    Help
+}
+
+COLOR_MODE="auto"
+CONTEXT_COUNT=1
+while getopts ':c:n:h' OPT; do
+    case $OPT in
+        c) COLOR_MODE="$OPTARG";;
+        n) CONTEXT_COUNT="$OPTARG";;
+        h) Help;;
+        :) PrintAndHelp "Option -$OPTARG requires an argument";;
+        ?) PrintAndHelp "Unknown option -$OPTARG";;
+    esac
+done
+shift $(($OPTIND - 1))
+if [ "$COLOR_MODE" != "auto" ] && [ "$COLOR_MODE" != "always" ] && [ "$COLOR_MODE" != "never" ]; then
+    PrintAndHelp "Unknown color WHEN '$COLOR_MODE'"
+fi
+
+NORMAL=""
+GREEN=""
+if test -t 1; then
+    ncolors=$(tput colors)
+    if test -n "$ncolors" && test $ncolors -ge 8; then
+        NORMAL="$(tput sgr0)"
+        GREEN="$(tput setaf 2)"
+    fi
+fi
+
+if [ "${#NORMAL}" -eq 0 ] && [ "$COLOR_MODE" == "always" ]; then
+    NORMAL="\033[0m"
+    GREEN="\033[0;32m"
+fi
+if [ "$COLOR_MODE" == "never" ]; then
+    NORMAL=""
+    GREEN=""
+fi
+
+RE="[^0-9A-Z](WARNING|WARN|WRN|ERROR|ERR|FATAL|FTL|FAIL|FAILED|EXCEPTION|TRACEBACK|PACNEW)[^0-9A-Z]?"
+digest() {
+    awk "{printf(\"${GREEN}%08d${NORMAL} %s\n\", NR, \$0)}" "$1" | grep -iE -C "$CONTEXT_COUNT" --no-group-separator --color="$COLOR_MODE" "$RE" -
+}
+
+if [ $# -eq 0 ]; then
+    digest "-"
+    exit $?
+fi
+
+for f in "$@"; do
+    digest "$f"
+done
