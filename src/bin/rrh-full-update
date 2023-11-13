@@ -58,13 +58,9 @@ if [ ! $? -eq 0 ]; then
     exit 4
 fi
 
-if command -v "unbuffer" >/dev/null 2>&1; then
-    "$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" unbuffer "-p" /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
-    UPDATE_EXIT_CODE=$?
-else
-    "$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" /etc/rrh/cmd/update "$@" 2>&1 | tee "$CMD_OUTPUT_FILE"
-    UPDATE_EXIT_CODE=$?
-fi
+
+"$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" script -qc "/etc/rrh/cmd/update $@" /dev/null 2>&1 | tee "$CMD_OUTPUT_FILE"
+UPDATE_EXIT_CODE=$?
 echo "$UPDATE_EXIT_CODE" >"$EXIT_CODE_FILE"
 
 if [ -t 0 ]; then

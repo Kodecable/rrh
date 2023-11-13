@@ -13,7 +13,7 @@ if [ $# -gt 1 ]; then
 fi
 
 if command -v "less" >/dev/null 2>&1; then
-    "$RRH_USR_BIN/rrh-cat-output" "$@" | less -r -
+    "$RRH_USR_BIN/rrh-cat-output" -r "$@" | less -r -
 else
     "$RRH_USR_BIN/rrh-cat-output" "$@" | more
 fi
