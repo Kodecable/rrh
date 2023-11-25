@@ -1,7 +1,5 @@
 # RRH Configuration
 
-[toc]
-
 ## Doas
 
 Sudo and OpenDoas are supported out-of-the-box. If both of them exist, Sudo will be used.

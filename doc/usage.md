@@ -1,7 +1,5 @@
 # RRH Usage
 
-[toc]
-
 ## **Scenes**
 
 ### Using AUR Helper
