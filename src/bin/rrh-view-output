@@ -18,5 +18,5 @@ else
     "$RRH_USR_BIN/rrh-cat-output" "$@" | more
 fi
 EXIT_CODE=$?
-echo "$ESC[?25h"
+echo -n "$ESC[?25h"
 exit $EXIT_CODE
