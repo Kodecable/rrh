@@ -4,6 +4,9 @@ set -o pipefail
 RRH_VERSION="source"
 RRH_USR_BIN="."
 RRH_VAR="$HOME/.cache/rrh-test"
+ESC=$(printf '\033')
+CTRL_M=$(printf '\015')
+CTRL_G=$(printf '\07')
 
 help() {
     echo "Usage: rrh-cat-output [-r] [ACTION_ID]"
@@ -42,7 +45,12 @@ if [ ! -d "$RRH_VAR/action/$ACTION_ID" ]; then
 fi
 
 if [ $RAW_OUTPUT -eq 0 ]; then
-    cat "$RRH_VAR/action/$ACTION_ID/cmd_output" | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g'
+    cat "$RRH_VAR/action/$ACTION_ID/cmd_output" |
+        sed "s/$ESC[([]?\?[0-9;]*[a-zA-Z]//g" |   # Remove ansi escape codes
+        sed "s/$CTRL_G/\n/g" |                    # Remove ^G
+        sed "s/$CTRL_M/\n/g" |                    # Replace ^M with \n, this
+                                                  # will create empty lines
+        sed '/^$/d'                               # Remove empty lines
 else
     cat "$RRH_VAR/action/$ACTION_ID/cmd_output"
 fi
