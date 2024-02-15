@@ -103,7 +103,7 @@ if [ -f /etc/rrh/cmd/post_update ]; then
 fi
 
 if [ -f /etc/rrh/auto_digest ]; then
-    "$RRH_USR_BIN/rrh-output-digest" "$CMD_OUTPUT_FILE"
+    "$RRH_USR_BIN/rrh-cat-output" | "$RRH_USR_BIN/rrh-output-digest"
     DIGEST_CODE=$?
     if [ ! $DIGEST_CODE -eq 0 ] && [ ! $DIGEST_CODE -eq 1 ]; then
         echo "rrh-output-digest failed(code $DIGEST_CODE)!"
