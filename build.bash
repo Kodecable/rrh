@@ -44,7 +44,10 @@ done
 shift $(($OPTIND - 1))
 if [ -z "$RRH_VERSION" ]; then
     if command -v "git" >/dev/null 2>&1 && [ -d ".git" ]; then
-        RRH_VERSION="commit.$(git rev-parse --verify HEAD)"
+        RRH_VERSION="commit.$(git rev-parse --short --verify HEAD)"
+	if [ ! -z "$(git status -s)" ]; then
+		RRH_VERSION="$RRH_VERSION+"
+	fi
     else
         RRH_VERSION="unknown"
     fi
