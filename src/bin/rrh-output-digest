@@ -44,7 +44,7 @@ fi
 
 NORMAL=""
 GREEN=""
-if test -t 1; then
+if test -t 1 && command -v "tput" >/dev/null 2>&1; then
     ncolors=$(tput colors)
     if test -n "$ncolors" && test $ncolors -ge 8; then
         NORMAL="$(tput sgr0)"
