@@ -44,14 +44,19 @@ fi
 
 NORMAL=""
 GREEN=""
-if test -t 1 && command -v "tput" >/dev/null 2>&1; then
-    ncolors=$(tput colors)
-    if test -n "$ncolors" && test $ncolors -ge 8; then
-        NORMAL="$(tput sgr0)"
-        GREEN="$(tput setaf 2)"
+if test -t 1; then
+    if command -v "tput" >/dev/null 2>&1; then
+        # get escape seq from tput if it exists
+        ncolors=$(tput colors)
+        if test -n "$ncolors" && test $ncolors -ge 8; then
+            NORMAL="$(tput sgr0)"
+            GREEN="$(tput setaf 2)"
+        fi
+    else
+        NORMAL="\033[0m"
+        GREEN="\033[0;32m"
     fi
 fi
-
 if [ "${#NORMAL}" -eq 0 ] && [ "$COLOR_MODE" == "always" ]; then
     NORMAL="\033[0m"
     GREEN="\033[0;32m"
