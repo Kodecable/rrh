@@ -1,20 +1,21 @@
 #!/bin/sh
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 if [ ! "$#" -eq 0 ]; then
     echo "Usage: rrh-mark-update"
-        echo "Mark once update. May require root."
-    echo "RRH $RRH_VERSION"
+    echo "Mark once update. May require root."
+    echo "RRH $RRH_VER"
     exit 8
 fi
 
 if [ "$(id -un)" != "root" ]; then
-        if [ -f /etc/rrh/auto_sudo ]; then
-                "$RRH_USR_BIN/rrh-doas" "root" "$0" "$@"
+        if [ -f "$RRH_ETC/auto_sudo" ]; then
+                "$RRH_BIN/rrh-doas" "root" "$0" "$@"
                 exit $?
         else
                 echo "You may need run this command as root"

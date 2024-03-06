@@ -2,9 +2,10 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 help() {
     echo "Usage: rrh-last-time [-h]"
@@ -12,7 +13,7 @@ help() {
     echo ""
     echo "  -h    Human-readable time format"
     echo ""
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 }
 

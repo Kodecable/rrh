@@ -1,9 +1,10 @@
 #!/bin/bash
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 OUTDATE_TIME=""
 REMIND_TEXT="This system has not been updated for a long time"
@@ -15,7 +16,7 @@ help() {
     echo "  OUTDATE_TIME    see 'rrh-is-outdated --help'"
     echo "  REMIND_TEXT     text (default '$REMIND_TEXT')"
     echo ""
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 }
 
@@ -33,10 +34,10 @@ if [ ! $# -eq 0 ]; then
 fi
 
 if [ ! -z "$OUTDATE_TIME" ]; then
-    "$RRH_USR_BIN/rrh-is-outdated" "$OUTDATE_TIME"
+    "$RRH_BIN/rrh-is-outdated" "$OUTDATE_TIME"
     RESULT=$?
 else
-    "$RRH_USR_BIN/rrh-is-outdated"
+    "$RRH_BIN/rrh-is-outdated"
     RESULT=$?
 fi
 

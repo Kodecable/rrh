@@ -1,21 +1,22 @@
 #!/bin/sh
 set -o nounset
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 ESC=$(printf '\033')
 
 if [ $# -gt 1 ]; then
     echo "Usage: rrh-view-output [ACTION_ID]"
     echo "View the output of action."
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 fi
 
 if command -v "less" >/dev/null 2>&1; then
-    "$RRH_USR_BIN/rrh-cat-output" -r "$@" | sed "s/$ESC\[?25l//g" | less -r -
+    "$RRH_BIN/rrh-cat-output" -r "$@" | sed "s/$ESC\[?25l//g" | less -r -
 else
-    "$RRH_USR_BIN/rrh-cat-output" "$@" | more
+    "$RRH_BIN/rrh-cat-output" "$@" | more
 fi
 EXIT_CODE=$?
 echo -n "$ESC[?25h"

@@ -2,20 +2,21 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 if [ $# -lt 2 ]; then
     echo "Usage: rrh-doas USER COMMAND..."
     echo "RRH unified interface for user switching."
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 fi
 
 if [ "$(id -un)" != "$1" ]; then
-    if [ -f "/etc/rrh/cmd/doas" ]; then
-        /etc/rrh/cmd/doas "root" "${@:2}"
+    if [ -f "$RRH_ETC/cmd/doas" ]; then
+        "$RRH_ETC/cmd/doas" "root" "${@:2}"
         exit $?
     else
         if command -v "sudo" >/dev/null 2>&1; then
@@ -25,7 +26,7 @@ if [ "$(id -un)" != "$1" ]; then
             doas -u "$1" "${@:2}"
             exit $?
         else
-            echo "sudo/doas not found, please config /etc/rrh/cmd/doas"
+            echo "sudo/doas not found, please config $RRH_ETC/cmd/doas"
             exit 13
         fi
     fi

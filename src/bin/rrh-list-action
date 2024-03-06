@@ -2,14 +2,15 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 if [ ! "$#" -eq 0 ]; then
     echo "Usage: rrh-list-action"
     echo "List actions."
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 fi
 
@@ -18,7 +19,7 @@ if [ ! -f "$RRH_VAR/last" ]; then
     exit 0
 fi
 
-echo "Last update time: $($RRH_USR_BIN/rrh-last-time -h) ago"
+echo "Last update time: $($RRH_BIN/rrh-last-time -h) ago"
 echo "Last update id:   $(cat $RRH_VAR/last)"
 
 echo "Action ID      Exit Code"

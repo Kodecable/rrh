@@ -1,23 +1,24 @@
 #!/bin/sh
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 if [ "$(id -un)" != "root" ]; then
-    "$RRH_USR_BIN/rrh-doas" "root" "$0" "$@"
+    "$RRH_BIN/rrh-doas" "root" "$0" "$@"
     exit $?
 fi
     
-if [ ! -f "/etc/rrh/cmd/update" ]; then
-    echo "/etc/rrh/cmd/update not exists!" >&2
+if [ ! -f "$RRH_ETC/cmd/update" ]; then
+    echo "$RRH_ETC/cmd/update not exists!" >&2
     exit 1
 fi
 
 CONFIG_USER="root"
-if [ -f "/etc/rrh/user" ]; then
-    CONFIG_USER="$(cat /etc/rrh/user)"
+if [ -f "$RRH_ETC/user" ]; then
+    CONFIG_USER="$(cat $RRH_ETC/user)"
     if [ ! $? -eq 0 ]; then
         echo "read user config failed!" >&2
         exit 2
@@ -39,8 +40,8 @@ if [ ! $? -eq 0 ]; then
     exit 5
 fi
 
-if [ -f /etc/rrh/cmd/pre_update ]; then
-    /etc/rrh/cmd/pre_update
+if [ -f "$RRH_ETC/cmd/pre_update" ]; then
+    $RRH_ETC/cmd/pre_update
     PRE_UPDATE_CODE=$?
     if [ ! $PRE_UPDATE_CODE -eq 0 ]; then
         echo "pre_update cmd failed(code $PRE_UPDATE_CODE)!"
@@ -59,7 +60,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 
-"$RRH_USR_BIN/rrh-doas" "$CONFIG_USER" script -qc "/etc/rrh/cmd/update $@" /dev/null 2>&1 | tee "$CMD_OUTPUT_FILE"
+"$RRH_BIN/rrh-doas" "$CONFIG_USER" script -qc "$RRH_ETC/cmd/update $@" /dev/null 2>&1 | tee "$CMD_OUTPUT_FILE"
 UPDATE_EXIT_CODE=$?
 echo "$UPDATE_EXIT_CODE" >"$EXIT_CODE_FILE"
 
@@ -91,8 +92,8 @@ if [ ! $UPDATE_EXIT_CODE -eq 0 ]; then
     exit 6
 fi
 
-if [ -f /etc/rrh/cmd/post_update ]; then
-    /etc/rrh/cmd/post_update
+if [ -f "$RRH_ETC/cmd/post_update" ]; then
+    "$RRH_ETC/cmd/post_update"
     POST_UPDATE_CODE=$?
     if [ ! $POST_UPDATE_CODE -eq 0 ]; then
         echo "post_update cmd failed(code $POST_UPDATE_CODE)!"
@@ -102,8 +103,8 @@ if [ -f /etc/rrh/cmd/post_update ]; then
     fi
 fi
 
-if [ -f /etc/rrh/auto_digest ]; then
-    "$RRH_USR_BIN/rrh-cat-output" | "$RRH_USR_BIN/rrh-output-digest"
+if [ -f "$RRH_ETC/auto_digest" ]; then
+    "$RRH_BIN/rrh-cat-output" | "$RRH_BIN/rrh-output-digest"
     DIGEST_CODE=$?
     if [ ! $DIGEST_CODE -eq 0 ] && [ ! $DIGEST_CODE -eq 1 ]; then
         echo "rrh-output-digest failed(code $DIGEST_CODE)!"
@@ -113,8 +114,8 @@ if [ -f /etc/rrh/auto_digest ]; then
     fi
 fi
 
-if [ ! -f /etc/rrh/cmd/no_auto_remove ]; then
-    "$RRH_USR_BIN/rrh-auto-remove"
+if [ ! -f "$RRH_ETC/cmd/no_auto_remove" ]; then
+    "$RRH_BIN/rrh-auto-remove"
     AUTO_REMOVE_CODE=$?
     if [ ! $AUTO_REMOVE_CODE -eq 0 ]; then
         echo "rrh-auto-remove failed(code $AUTO_REMOVE_CODE)!"

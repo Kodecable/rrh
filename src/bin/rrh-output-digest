@@ -3,9 +3,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 shopt -s nocasematch
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 Help() {
     echo "Usage: rrh-output-digest [OPTION]... [FILE]"
@@ -17,7 +18,7 @@ Help() {
     echo "  -h          print this message and exit"
     echo ""
     echo "With no FILE or FILE is '-', read standard input."
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 }
 

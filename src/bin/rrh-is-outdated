@@ -2,9 +2,10 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 help() {
     echo "Usage: rrh-is-outdated [OUTDATE_TIME]"
@@ -12,10 +13,10 @@ help() {
     echo ""
     echo "  OUTDATE_TIME    Outdate time in second(s)"
     echo ""
-    echo "OUTDATE_TIME priority: argument > /etc/rrh/outdate_time > '7 days'"
+    echo "OUTDATE_TIME priority: argument > $RRH_ETC/outdate_time > '7 days'"
     echo "If it is more than 'OUTDATE_TIME' since the last update,"
     echo "exit with 0, otherwise exit with non-0."
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 }
 
@@ -23,10 +24,10 @@ if [ "$#" -gt 1 ]; then
     help
 fi
 
-if [ -f /etc/rrh/outdate_time ]; then
-    OUTDATE_TIME="$(cat /etc/rrh/outdate_time)"
+if [ -f "$RRH_ETC/outdate_time" ]; then
+    OUTDATE_TIME="$(cat $RRH_ETC/outdate_time)"
 else
-    OUTDATE_TIME="$(expr 7 \* 24 \* 60 \* 60)" # 7 days
+    OUTDATE_TIME=604800 # 7 days
 fi
 
 if [ ! $# -eq 0 ]; then 
@@ -38,7 +39,7 @@ if [ ! $# -eq 0 ]; then
     fi
 fi
 
-LAST_TIME="$($RRH_USR_BIN/rrh-last-time)"
+LAST_TIME="$($RRH_BIN/rrh-last-time)"
 
 if [ "$LAST_TIME" -gt "$OUTDATE_TIME" ]; then
     exit 0

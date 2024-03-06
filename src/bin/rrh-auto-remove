@@ -2,20 +2,21 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-RRH_VERSION="source"
-RRH_USR_BIN="."
-RRH_VAR="$HOME/.cache/rrh-test"
+RRH_VER="source"
+RRH_BIN="."
+RRH_VAR="$HOME/.cache/rrh-dev/var"
+RRH_ETC="$HOME/.cache/rrh-dev/etc"
 
 if [ "$#" -gt 1 ]; then
     echo "Usage: rrh-auto-remove [KEEP_COUNT]"
     echo "Remove all the action except latest [KEEP_COUNT]. May require root."
-    echo "RRH $RRH_VERSION"
+    echo "RRH $RRH_VER"
     exit 8
 fi
 
 if [ "$(id -un)" != "root" ]; then
-    if [ -f /etc/rrh/auto_sudo ]; then
-        "$RRH_USR_BIN/rrh-doas" "root" "$0" "$@"
+    if [ -f "$RRH_ETC/auto_sudo" ]; then
+        "$RRH_BIN/rrh-doas" "root" "$0" "$@"
         exit $?
     else
         echo "You may need run this command as root"
@@ -26,14 +27,14 @@ ACTION_LIST=($(ls -1 --sort=time --time=creation "$RRH_VAR/action/"))
 
 if [ ! "$#" -eq 0 ]; then
     KEEP_COUNT="$1"
-elif [ -f /etc/rrh/auto_remove_keep_count ]; then
-    KEEP_COUNT="$(cat /etc/rrh/auto_remove_keep_count)"
+elif [ -f "$RRH_ETC/auto_remove_keep_count" ]; then
+    KEEP_COUNT="$(cat $RRH_ETC/auto_remove_keep_count)"
 else
     KEEP_COUNT=5
 fi
 
 if [ "${#ACTION_LIST[@]}" -gt  "$KEEP_COUNT" ]; then
     for (( i=5; i<${#ACTION_LIST[@]}; i++ )); do
-        "$RRH_USR_BIN/rrh-remove-action" "${ACTION_LIST[$i]}"
+        "$RRH_BIN/rrh-remove-action" "${ACTION_LIST[$i]}"
     done
 fi
